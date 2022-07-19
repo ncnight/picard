@@ -1,7 +1,7 @@
 {
     "run_name": "t5-cosql",
     "model_name_or_path": "t5-3b",
-    "dataset": "cosql+spider",
+    "dataset": "cosql",
     "source_prefix": "",
     "schema_serialization_type": "peteshaw",
     "schema_serialization_randomized": false,
@@ -26,7 +26,9 @@
     "warmup_ratio": 0.0,
     "warmup_steps": 0,
     "seed": 1,
-    "report_to": ["wandb"],
+    "report_to": [
+        "wandb"
+    ],
     "logging_strategy": "steps",
     "logging_first_step": true,
     "logging_steps": 4,

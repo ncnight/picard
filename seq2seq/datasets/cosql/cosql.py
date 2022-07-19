@@ -71,7 +71,7 @@ _HOMEPAGE = "https://yale-lily.github.io/cosql"
 
 _LICENSE = "CC BY-SA 4.0"
 
-_URL = "https://drive.google.com/uc?export=download&id=14x6lsWqlu6gR-aYxa6cemslDN3qT3zxP"
+_URL = "https://drive.google.com/uc?export=download&id=1Pvv6X_BXse35xJ9O9q7UqaRoNIEBaSwc"
 
 
 class CoSQL(datasets.GeneratorBasedBuilder):
@@ -81,7 +81,7 @@ class CoSQL(datasets.GeneratorBasedBuilder):
         datasets.BuilderConfig(
             name="cosql",
             version=VERSION,
-            description="A Conversational Text-to-SQL Challenge Towards Cross-Domain Natural Language Interfaces to Databases",
+            description="A Conversational Text-to-SQL Challenge Towards Cross-Domain Natural Language Interfaces to Databases. Reduced set based on CoVis",
         ),
     ]
 
@@ -146,9 +146,11 @@ class CoSQL(datasets.GeneratorBasedBuilder):
     def _generate_examples(self, data_filepath, db_path):
         """This function returns the examples in the raw (text) form."""
         logger.info("generating examples from = %s", data_filepath)
-        idx = 0 # indexing each training instance
+        idx = 0  # indexing each training instance
         with open(data_filepath, encoding="utf-8") as f:
             cosql = json.load(f)
+            print('For dataset, ', data_filepath,
+                  ' there are ', len(cosql), ' instances.')
             for sample in cosql:
                 db_id = sample["database_id"]
                 if db_id not in self.schema_cache:
@@ -182,7 +184,8 @@ class CoSQL(datasets.GeneratorBasedBuilder):
                 idx += 1
                 utterances = []
                 for turn_idx, turn in enumerate(sample["interaction"]):
-                    utterances.extend((utterance.strip() for utterance in turn["utterance"].split(sep="|")))
+                    utterances.extend(
+                        (utterance.strip() for utterance in turn["utterance"].split(sep="|")))
                     yield idx, {
                         "utterances": list(utterances),
                         "query": turn["query"],

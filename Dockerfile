@@ -8,6 +8,11 @@ FROM $BASE_IMAGE as dev
 ARG TOOLKIT_USER_ID=13011
 ARG TOOLKIT_GROUP_ID=13011
 
+# RUN rm /etc/apt/sources.list.d/cuda.list
+# RUN rm /etc/apt/sources.list.d/nvidia-ml.list
+RUN apt-key del A4B469963BF863CC
+RUN apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/3bf863cc.pub
+
 RUN apt-get update \
     # Required to save git hashes
     && apt-get install -y -q git curl unzip make gettext \

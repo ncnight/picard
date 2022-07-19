@@ -64,19 +64,15 @@ pull-dev-image:
 
 .PHONY: build-train-image
 build-train-image:
-	ssh-add
 	docker buildx build \
 		--builder $(BUILDKIT_BUILDER) \
-		--ssh default=$(SSH_AUTH_SOCK) \
 		-f Dockerfile \
 		--tag tscholak/$(TRAIN_IMAGE_NAME):$(GIT_HEAD_REF) \
 		--tag tscholak/$(TRAIN_IMAGE_NAME):cache \
 		--build-arg BASE_IMAGE=$(BASE_IMAGE) \
 		--target train \
-		--cache-from type=registry,ref=tscholak/$(TRAIN_IMAGE_NAME):cache \
-		--cache-to type=inline \
-		--push \
-		git@github.com:ElementAI/picard#$(GIT_HEAD_REF)
+		--load \
+		.
 
 .PHONY: pull-train-image
 pull-train-image:
