@@ -120,6 +120,7 @@ train_cosql: pull-train-image
 	mkdir -p -m 777 transformers_cache
 	mkdir -p -m 777 wandb
 	docker run \
+		--gpus all \
 		-it \
 		--rm \
 		--user 13011:13011 \
@@ -128,7 +129,7 @@ train_cosql: pull-train-image
 		--mount type=bind,source=$(BASE_DIR)/configs,target=/app/configs \
 		--mount type=bind,source=$(BASE_DIR)/wandb,target=/app/wandb \
 		tscholak/$(TRAIN_IMAGE_NAME):$(GIT_HEAD_REF) \
-		/bin/bash -c "python seq2seq/run_seq2seq.py configs/train_cosql.json"
+		/bin/bash -c "nvidia-smi && python seq2seq/run_seq2seq.py configs/train_cosql.json"
 
 .PHONY: eval
 eval: pull-eval-image
